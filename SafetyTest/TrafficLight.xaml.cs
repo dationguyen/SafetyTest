@@ -89,10 +89,8 @@ namespace SafetyTest
         private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
             timer.Stop();
-
-            stopwatch.Reset();
+            
             stopwatch.Stop();
-
             watchTimer.Stop();
         }
     }
