@@ -7,17 +7,15 @@ using Windows.UI.Xaml.Navigation;
 namespace SafetyTest
 {
     /// <summary>
-    /// solution page that display the traffic lights changing every 30 second.
+    /// solution page that display the traffic lights changing every 5 mimutes.
     /// this Solution using the DispatcherTimer to control the light
     /// this solution didn't apply MVVM pattern due to the requirement. 
     /// </summary>
     public sealed partial class TrafficLight : Page
     {
-        DateTime startTime = new DateTime();
+        //controller for lights
+        LightController controller = new LightController();
 
-        //create timer
-        //timer for light control
-        DispatcherTimer timer;
         //timer for the watch
         DispatcherTimer watchTimer;
 
@@ -28,67 +26,52 @@ namespace SafetyTest
         {
             this.InitializeComponent();
 
-            timer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromSeconds(GlobalVariable.TimerStep)
-            };
-
             watchTimer = new DispatcherTimer()
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            watchTimer.Tick += WatchTimer_Tick;
-
-            //set the normal state and count for the traffic lights
-            lightEW.State = LightStates.Green;
-            lightEW.Count = GlobalVariable.GreenDuration / GlobalVariable.TimerStep;
-
-            lightNS.State = LightStates.Red;
-            lightNS.Count = GlobalVariable.RedDuration / GlobalVariable.TimerStep;
-
 
         }
 
         private void WatchTimer_Tick(object sender, object e)
         {
+            if (stopwatch.Elapsed.Minutes == 10)
+            {
+                BtnStop_Click(sender, new RoutedEventArgs());
+            }
             txtTime.Text = stopwatch.Elapsed.ToString(@"hh\:mm\:ss", null);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //assign the tick method
-            timer.Tick += Timer_Tick;
+            watchTimer.Tick += WatchTimer_Tick;
             base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             //release tick method
-            timer.Tick -= Timer_Tick;
+            watchTimer.Tick -= WatchTimer_Tick;
             base.OnNavigatedFrom(e);
         }
 
-        private void Timer_Tick(object sender, object e)
-        {
-            //update light status
-            lightEW.UpdateLight();
-            lightNS.UpdateLight();
-        }
-
-
-
         private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
-            startTime = DateTime.Now;
-            timer.Start();
+            controller.IsRunning = true;
 
             stopwatch.Start();
             watchTimer.Start();
+
+            controller.TurnRed(lightEW);
+            controller.TurnGreen(lightNS);
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
-            timer.Stop();
+            //timer.Stop();
+            controller.IsRunning = false;
+            controller = new LightController();
 
             stopwatch.Reset();
             stopwatch.Stop();

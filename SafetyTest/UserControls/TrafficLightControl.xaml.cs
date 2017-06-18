@@ -80,30 +80,30 @@ namespace SafetyTest.UserControls
             ((TrafficLightControl)d).SetState();
         }
 
-        public void UpdateLight()
-        {            
-            Count--;
-            if (Count <= 0)
-            {
-                switch (State)
-                {
-                    case LightStates.Green:
-                        Count = GlobalVariable.YellowDuration / GlobalVariable.TimerStep;
-                        State = LightStates.Yellow;
-                        break;
-                    case LightStates.Yellow:
-                        Count = GlobalVariable.RedDuration / GlobalVariable.TimerStep;
-                        State = LightStates.Red;
-                        break;
-                    case LightStates.Red:
-                        Count = GlobalVariable.GreenDuration / GlobalVariable.TimerStep;
-                        State = LightStates.Green;
-                        break;
-                    default:
-                        break;
-                }
-            }       
-        }
+        //public void UpdateLight()
+        //{            
+        //    Count--;
+        //    if (Count <= 0)
+        //    {
+        //        switch (State)
+        //        {
+        //            case LightStates.Green:
+        //                Count = GlobalVariable.YellowDuration / GlobalVariable.TimerStep;
+        //                State = LightStates.Yellow;
+        //                break;
+        //            case LightStates.Yellow:
+        //                Count = GlobalVariable.RedDuration / GlobalVariable.TimerStep;
+        //                State = LightStates.Red;
+        //                break;
+        //            case LightStates.Red:
+        //                Count = GlobalVariable.GreenDuration / GlobalVariable.TimerStep;
+        //                State = LightStates.Green;
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }       
+        //}
     }
 
 }
